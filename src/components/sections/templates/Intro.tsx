@@ -1,0 +1,164 @@
+import { useState } from "react";
+import styled from "styled-components";
+
+const Intro = () => {
+	const [searchTerm, setSearchTerm] = useState("");
+
+	return (
+		<StyledDiv className="w-full">
+			<div className="sb-bg" />
+
+			<h1 className="text-secondary font-inter text-center">
+				Find Templates that match your needs
+			</h1>
+			<p className="text-center">
+				Explore our various categories of powerful templates to get you started
+				in less than no time
+			</p>
+
+			<form onSubmit={(e) => e.preventDefault()} className="relative">
+				<input
+					type="search"
+					value={searchTerm}
+					placeholder="Search"
+					name="search-template"
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+				<button type="submit">Search</button>
+			</form>
+		</StyledDiv>
+	);
+};
+
+const StyledDiv = styled.div`
+	height: 333px;
+	padding: 89px 0 0;
+
+	& > .sb-bg {
+		left: 0;
+		right: 0;
+		top: 66px;
+		width: 100%;
+		height: 333px;
+		position: absolute;
+		background: url("/images/backgrounds/templates-intro-bg.webp") no-repeat
+			center center/cover;
+
+		@media screen and (max-width: 991px) {
+			padding: 80px 0;
+			height: 333px;
+		}
+
+		@media screen and (max-width: 767px) {
+			padding: 64px 0;
+		}
+
+		@media screen and (max-width: 639px) {
+			// height: 450px;
+			padding: 40px 0;
+		}
+	}
+
+	& > h1 {
+		font-size: 48px;
+		font-weight: 900;
+		line-height: 58px;
+
+		@media screen and (max-width: 991px) {
+			font-size: 32px;
+			line-height: 40px;
+		}
+
+		@media screen and (max-width: 441px) {
+			font-size: 24px;
+			line-height: 32px;
+		}
+	}
+
+	& > p {
+		font-size: 20px;
+		font-weight: 400;
+		max-width: 608px;
+		line-height: 168.5%;
+		margin: 20px auto 0;
+
+		@media screen and (max-width: 992px) {
+			max-width: 90%;
+		}
+
+		@media screen and (max-width: 639px) {
+			font-size: 16px;
+			line-height: 24px;
+			padding-bottom: 30px;
+		}
+	}
+
+	& > form {
+		max-width: 994px;
+		margin: 52px auto 0;
+		filter: drop-shadow(0px 4px 30px rgba(0, 0, 0, 0.11));
+
+		@media screen and (max-width: 639px) {
+			margin-top: 28px;
+		}
+
+		& > input {
+			width: 100%;
+			height: 73px;
+			outline: none;
+			display: block;
+			padding: 0 30px;
+			font-size: 20px;
+			font-weight: 400;
+			background: #fff;
+			line-height: 30px;
+			border-radius: 10px;
+			letter-spacing: 0.04em;
+			transition: border 0.3s ease-in-out;
+
+			@media screen and (max-width: 639px) {
+				height: 56px;
+				font-size: 18px;
+				padding: 0 20px;
+				margin-top: 10px;
+				position: relative;
+			}
+
+			&:focus {
+				border: 1px solid var(--color-primary);
+			}
+		}
+
+		& > button {
+			top: 5px;
+			right: 5px;
+			color: #fff;
+			width: 175px;
+			height: 63px;
+			font-size: 24px;
+			font-weight: 600;
+			line-height: 31px;
+			position: absolute;
+			border-radius: 12px;
+			background: var(--color-primary);
+			transition: background 0.5s ease-in-out;
+
+			@media screen and (max-width: 639px) {
+				top: 0px;
+				right: 0px;
+				width: 100%;
+				height: 56px;
+				font-size: 20px;
+				margin-top: 14px;
+				position: relative;
+				border-radius: 8px;
+			}
+
+			&:hover {
+				background: #158e8a;
+			}
+		}
+	}
+`;
+
+export default Intro;
