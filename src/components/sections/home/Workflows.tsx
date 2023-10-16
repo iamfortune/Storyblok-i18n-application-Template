@@ -1,17 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Workflows = () => {
+const Workflows: FC<Blok> = ({ blok }) => {
 	return (
-		<Section>
-			<h2 className="font-inter text-secondary text-center">
-				Keep your existing workflows
-			</h2>
-			<p className="text-center mx-auto">
-				We do not intend to disrupt your existing workflows, instead we seek to
-				enhance it with powerful wall-to-wall integration
-			</p>
+		<Section {...storyblokEditable(blok)}>
+			<h2 className="font-inter text-secondary text-center">{blok?.title}</h2>
+			<div className="text-center mx-auto">{render(blok?.body)}</div>
 
-			<img src="/images/workflows.webp" alt="workflows" />
+			<img src={blok?.workflows?.filename} alt={blok?.workflows?.alt} />
 		</Section>
 	);
 };
@@ -37,16 +37,22 @@ const Section = styled.section`
 		}
 	}
 
-	& p {
-		font-size: 20px;
-		font-weight: 400;
+	& div {
 		max-width: 734px;
-		line-height: 168.5%;
-		margin-bottom: 10px;
 
 		@media screen and (max-width: 639px) {
-			font-size: 18px;
 			max-width: 100%;
+		}
+
+		& p {
+			font-size: 20px;
+			font-weight: 400;
+			line-height: 168.5%;
+			margin-bottom: 10px;
+
+			@media screen and (max-width: 639px) {
+				font-size: 18px;
+			}
 		}
 	}
 `;

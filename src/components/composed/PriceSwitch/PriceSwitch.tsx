@@ -2,9 +2,9 @@ import { FC } from "react";
 import styled from "styled-components";
 
 interface Props {
-	value: "monthly" | "yearly";
+	value: 1 | 2;
 	className?: string;
-	onSwitch: (val: Props["value"]) => void;
+	onSwitch: (val: 1 | 2) => void;
 }
 
 const PriceSwitch: FC<Props> = ({ value, onSwitch, className = "" }) => {
@@ -12,11 +12,9 @@ const PriceSwitch: FC<Props> = ({ value, onSwitch, className = "" }) => {
 		<StyledButton
 			title="Toggle theme"
 			className={`flex items-center cursor-pointer ${className}`}
-			onClick={() => onSwitch(value === "monthly" ? "yearly" : "monthly")}
+			onClick={() => onSwitch(value === 1 ? 2 : 1)}
 		>
-			<div
-				className={value === "yearly" ? "translate-x-[21px]" : "translate-x-0"}
-			/>
+			<div className={value === 2 ? "translate-x-[21px]" : "translate-x-0"} />
 		</StyledButton>
 	);
 };

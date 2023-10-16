@@ -1,42 +1,47 @@
+import { FC } from "react";
 import styled from "styled-components";
 import Marquee from "react-fast-marquee";
+import { storyblokEditable } from "@storyblok/react";
+import { Blok } from "../../../interfaces";
 
-const customers = [
-	{
+interface ICompany {
+	id: number;
+	alt: string;
+	filename: string;
+	title: "stripe" | "microsoft" | "airbnb" | "google" | "storyblok";
+}
+
+const styles = {
+	stripe: {
 		height: 35,
 		width: 84,
-		src: "/images/icons/stripe.webp",
 	},
-	{
+	microsoft: {
 		height: 35,
 		width: 163,
-		src: "/images/icons/microsoft.webp",
 	},
-	{
+	airbnb: {
 		height: 35,
 		width: 110,
-		src: "/images/icons/airbnb.webp",
 	},
-	{
+	google: {
 		height: 35,
 		width: 107,
-		src: "/images/icons/google.webp",
 	},
-	{
+	storyblok: {
 		height: 35,
 		width: 164,
-		src: "/images/icons/storyblok.webp",
 	},
-];
+};
 
-const Customers = () => {
+const Customers: FC<Blok> = ({ blok }) => {
 	return (
-		<Section className="w-full mx-auto">
+		<Section {...storyblokEditable(blok)} className="w-full mx-auto">
 			<h2 className="text-center" style={{ marginBottom: 40 }}>
-				Trusted by top companies
+				{blok?.title}
 			</h2>
 
-			<div className="sb-customers-logos flex items-center justify-center">
+			<div className="sb-company-logos flex items-center justify-center">
 				<Marquee
 					speed={100}
 					gradient={false}
@@ -44,9 +49,24 @@ const Customers = () => {
 					pauseOnHover={true}
 					className="flex items-center"
 				>
-					{customers.map((customer) => (
-						<img {...customer} alt="customer" key={customer.src} />
-					))}
+					{blok?.companies?.length
+						? blok.companies.map((company: ICompany) => (
+								<img
+									key={company?.id}
+									alt={company?.alt}
+									src={company?.filename}
+									style={{
+										marginRight: 100,
+										height:
+											styles[company?.title.toLowerCase() as ICompany["title"]]
+												?.height,
+										width:
+											styles[company?.title.toLowerCase() as ICompany["title"]]
+												?.width,
+									}}
+								/>
+						  ))
+						: null}
 				</Marquee>
 			</div>
 		</Section>

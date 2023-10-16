@@ -1,26 +1,78 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import { useMediaQuery } from "react-responsive";
 import Logo from "../../atoms/Icons/Logo";
 import LanguageDropdown from "../../atoms/LanguageDropdown/LanguageDropdown";
 
-const dropdownOptions = ["English [US]", "French [FR]", "German [DE]"];
-const links = [
-	{
-		name: "About",
-		href: "/about",
-	},
-	{
-		name: "Templates",
-		href: "/templates",
-	},
+export interface LanguageOption {
+	title: string;
+	code: "en-us" | "de-de" | "fr";
+}
+
+const dropdownOptions: LanguageOption[] = [
+	{ title: "English [US]", code: "en-us" },
+	{ title: "German [DE]", code: "de-de" },
+	{ title: "French [FR]", code: "fr" },
 ];
+
 const Navbar = () => {
+	const router = useRouter();
 	const [showDropdown, setShowDropdown] = useState(false);
-	const [selectedLanguage, setSelectedLanguage] = useState(dropdownOptions[0]);
 
 	const isNotMobile = useMediaQuery({ query: "(min-width: 640px)" });
+
+	const language = (router.query?.lang || "en-us") as "en-us" | "de-de" | "fr";
+
+	const links = useMemo(() => {
+		switch (language) {
+			case "de-de":
+				return [
+					{
+						name: "Um",
+						href: "/about",
+					},
+					{
+						name: "Vorlagen",
+						href: "/templates",
+					},
+				];
+			case "fr":
+				return [
+					{
+						name: "À propos",
+						href: "/about",
+					},
+					{
+						name: "Modèles",
+						href: "/templates",
+					},
+				];
+			default:
+				return [
+					{
+						name: "About",
+						href: "/about",
+					},
+					{
+						name: "Templates",
+						href: "/templates",
+					},
+				];
+		}
+	}, [language]);
+
+	const buttonText = useMemo(() => {
+		switch (language) {
+			case "de-de":
+				return "Loslegen";
+			case "fr":
+				return "Commencer";
+			default:
+				return "Get Started";
+		}
+	}, [language]);
 
 	useEffect(() => {
 		if (!isNotMobile) {
@@ -37,11 +89,7 @@ const Navbar = () => {
 					</Link>
 
 					<div style={{ width: 135 }}>
-						<LanguageDropdown
-							options={dropdownOptions}
-							selectedOption={selectedLanguage}
-							onSelect={(option) => setSelectedLanguage(option)}
-						/>
+						<LanguageDropdown options={dropdownOptions} />
 					</div>
 				</div>
 
@@ -55,7 +103,7 @@ const Navbar = () => {
 							{link.name}
 						</Link>
 					))}
-					<Button className="ml-12">Get Started</Button>
+					<Button className="ml-12">{buttonText}</Button>
 				</div>
 
 				<button
@@ -95,7 +143,7 @@ const Navbar = () => {
 								</Link>
 							))}
 						</div>
-						<Button className="mt-3">Get Started</Button>
+						<Button className="mt-3">{buttonText}</Button>
 					</Dropdown>
 				</div>
 			</nav>

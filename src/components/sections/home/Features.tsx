@@ -1,57 +1,39 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @next/next/no-img-element */
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok, StoryblokImage } from "../../../interfaces";
 
-const features = [
-	{
-		iconUrl: "/images/icons/idea.svg",
-		title: "Idea Management",
-		description:
-			"Capture and organize your ideas in one place, and collaborate with your team to refine them into actionable plans.",
-	},
-	{
-		iconUrl: "/images/icons/roadmap.svg",
-		title: "Roadmap Planning",
-		description:
-			"Visualize your product development timeline and prioritize tasks to ensure you stay on track.",
-	},
-	{
-		iconUrl: "/images/icons/project.svg",
-		title: "Project Management",
-		description:
-			"Assign tasks, set deadlines, and track progress in real-time to keep everyone on the same page.",
-	},
-	{
-		iconUrl: "/images/icons/feedback.svg",
-		title: "Feedback Collection",
-		description:
-			"Gather feedback from stakeholders and customers to ensure your product meets their needs.",
-	},
-];
+interface IListItem {
+	body: unknown;
+	heading: string;
+	icon: StoryblokImage;
+}
 
-const Features = () => {
+const Features: FC<Blok> = ({ blok }) => {
 	return (
-		<Section className="mx-auto">
+		<Section {...storyblokEditable(blok)} className="mx-auto">
 			<header className="mx-auto">
-				<h1 className="text-center text-secondary font-inter">
-					Features <span className="text-primary">uniquely</span> tailored for
-					you
-				</h1>
-				<p className="text-center">
-					Our tool is designed to be flexible and customizable to fit your
-					unique needs. Whether you're a startup looking to launch your first
-					product or a large enterprise managing a portfolio of products, our
-					platform can help you stay organized and focused on your goals.
-				</p>
+				<div className="text-center text-secondary font-inter">
+					{render(blok?.title)}
+				</div>
+
+				<div className="text-center">{render(blok?.description)}</div>
 			</header>
 
 			<div className="flex flex-col items-center justify-center">
 				<div className="grid lg:grid-cols-2 grid-cols-1 gap-[74px] w-full">
-					{features.map((feature) => (
-						<FeatureCard key={feature.title}>
-							<img src={feature.iconUrl} alt="feature-icon" />
-							<h3 className="font-inter text-secondary">{feature.title}</h3>
-							<p>{feature.description}</p>
-						</FeatureCard>
-					))}
+					{blok?.list?.length
+						? blok?.list.map(({ heading, icon, body }: IListItem) => (
+								<FeatureCard key={heading}>
+									<img src={icon?.filename} alt={heading} />
+									<h3 className="font-inter text-secondary">{heading}</h3>
+									{render(body)}
+								</FeatureCard>
+						  ))
+						: null}
 				</div>
 			</div>
 		</Section>
@@ -86,7 +68,7 @@ const Section = styled.section`
 			}
 		}
 
-		& > p {
+		& > div > p {
 			font-weight: 400;
 			font-size: 20px;
 			line-height: 168.5%;

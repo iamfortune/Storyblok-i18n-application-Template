@@ -1,51 +1,80 @@
-import React, { FC } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+import {
+	SbBlokData,
+	StoryblokComponent,
+	storyblokEditable,
+} from "@storyblok/react";
+import { BlokWithType } from "../../../interfaces";
 
 interface Props {
 	title: string;
-	price: string;
-	perMonth: boolean;
-	className?: string;
+	buttonText: string;
+	yearlyPrice: string;
+	pricingType: number;
 	description: string;
+	monthlyPrice: string;
 	theme: "white" | "green";
 	perks: { text: string; available: boolean }[];
 }
 
-const PricingCard: FC<Props> = ({
-	title,
-	price,
-	perks,
-	theme,
-	perMonth,
-	description,
-	className = "",
-}) => {
+const PricingCard: FC<BlokWithType<Props>> = ({ blok }) => {
+	const router = useRouter();
+	const [perMonth, setPerMonth] = useState(true);
+	const {
+		title,
+		description,
+		monthlyPrice,
+		yearlyPrice,
+		perks,
+		theme,
+		pricingType,
+		buttonText,
+	} = blok;
+
+	const price = perMonth ? monthlyPrice : yearlyPrice;
+
+	const language = (router.query?.lang || "en-us") as "en-us" | "de-de" | "fr";
+
+	useEffect(() => {
+		if (pricingType) {
+			setPerMonth(pricingType === 1);
+		}
+	}, [pricingType]);
+
+	const translation = useMemo(() => {
+		switch (language) {
+			case "de-de":
+				return ["Monat", "Jahr"];
+			case "fr":
+				return ["Mois", "Année"];
+			default:
+				return ["Month", "Year"];
+		}
+	}, [language]);
+
 	return (
-		<StyledDiv className={className} theme={theme}>
+		<StyledDiv
+			theme={theme}
+			className="lg:col-span-4 col-span-12"
+			{...storyblokEditable(blok as unknown as SbBlokData)}
+		>
 			<h3 className="font-manrope">{title}</h3>
 			<p className="font-manrope sb-description">{description}</p>
 
 			<div className="font-manrope sb-price flex items-center">
 				<p>{price}</p>
-				<p>/ {perMonth ? "Month" : "Year"}</p>
+				<p>/ {perMonth ? translation[0] : translation[1]}</p>
 			</div>
 
 			<button className="w-full flex flex-col items-center justify-center">
-				Get Started
+				{buttonText}
 			</button>
 
 			<div className="sb-perks">
-				{perks.map(({ text, available }, idx) => (
-					<div key={text + title + idx} className="flex items-center">
-						<div className="flex flex-col items-center justify-center">
-							{available ? (
-								<img src="/images/icons/checkmark.svg" alt="Check mark" />
-							) : (
-								<img src="/images/icons/cancel.svg" alt="Not available" />
-							)}
-						</div>
-						<p className="font-manrope ml-[17px]">{text}</p>
-					</div>
+				{perks.map((perk, idx) => (
+					<StoryblokComponent key={idx} blok={perk} />
 				))}
 			</div>
 		</StyledDiv>

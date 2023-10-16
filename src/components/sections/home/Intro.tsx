@@ -1,12 +1,17 @@
-import React from "react";
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @next/next/no-img-element */
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Intro = () => {
+const Intro: FC<Blok> = ({ blok }) => {
 	return (
-		<Section>
+		<Section {...storyblokEditable(blok)}>
 			<div className="relative mx-auto sm:w-full w-max">
-				<h1 className="font-inter md:text-[64px] text-[40px] text-center text-secondary font-black">
-					Move from start to done
+				<h1 className="font-inter md:!text-[64px] text-[40px] text-center text-secondary font-black">
+					{blok?.headline}
 				</h1>
 
 				<img
@@ -16,17 +21,14 @@ const Intro = () => {
 				/>
 			</div>
 
-			<p className="text-center md:text-[24px] sm:text-[20px] sb-para-1">
-				Our platform is designed to help you streamline your product development
-				process, from ideation to launch. With our easy-to-use interface and
-				powerful features, you'll be able to bring your ideas to life in no
-				time.
-			</p>
+			<div className="text-center md:text-[24px] sm:text-[20px] sb-para-1">
+				{render(blok?.body)}
+			</div>
 
 			<div className="sb-video-section flex items-center justify-center">
 				<div className="flex items-center">
 					<p className="text-[15px] text-[#828282] mr-3 font-medium">
-						Watch Demo
+						{blok?.subText}
 					</p>
 					<img
 						alt="play-demo"
@@ -40,7 +42,9 @@ const Intro = () => {
 						src="/images/icons/seat.svg"
 						style={{ width: "14px", height: "13px", marginRight: "5px" }}
 					/>
-					<p className="text-[15px] text-white font-medium">Save a seat</p>
+					<p className="text-[15px] text-white font-medium">
+						{blok?.buttonText}
+					</p>
 				</button>
 			</div>
 		</Section>

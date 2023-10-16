@@ -1,26 +1,26 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const TeamAndCulture = () => {
+const TeamAndCulture: FC<Blok> = ({ blok }) => {
 	return (
-		<StyledDiv>
+		<Section {...storyblokEditable(blok)}>
 			<div className="flex flex-col-reverse md:grid md:grid-cols-2 lg:gap-[70px] md:gap-[40px]">
 				<div className="md:col-span-1">
-					<img src="/images/team.webp" alt="team image" />
+					<img src={blok?.image1?.filename} alt={blok?.image1?.alt} />
 				</div>
 				<div className="md:col-span-1 md:mt-6 md:mb-0 mb-10">
-					<h3 className="font-inter text-secondary text-center md:text-left">
-						The <span className="text-primary">Team</span>
-					</h3>
-					<p className="text-secondary text-center md:text-left">
-						Our team is made up of experienced product managers, designers, and
-						developers who understand the challenges of product development.
-						We've worked with hundreds of teams across various industries, from
-						startups to large enterprises, and we've seen first-hand the impact
-						that effective product development can have on a business.
-					</p>
+					<div className="font-inter text-secondary text-center md:text-left">
+						{render(blok?.heading1)}
+					</div>
+					<div className="text-secondary text-center md:text-left">
+						{render(blok?.body1)}
+					</div>
 
 					<div className="sb-btn-wrapper relative text-white">
-						<button>Join Team</button>
+						<button>{blok?.buttonText}</button>
 						<img src="/images/hiring.webp" alt="we're hiring" />
 					</div>
 				</div>
@@ -28,27 +28,23 @@ const TeamAndCulture = () => {
 
 			<div className="md:grid md:grid-cols-2 lg:gap-[70px] md:gap-[40px]">
 				<div className="md:col-span-1">
-					<h3 className="font-inter text-secondary text-center md:text-left">
-						Our <span className="text-primary">Culture</span>
-					</h3>
-					<p className="text-secondary text-center md:text-left">
-						We're committed to providing the best possible experience for our
-						users, which is why we offer a range of pricing options to fit your
-						budget and requirements. We also offer dedicated support from our
-						team of experts, who are always available to help you optimize your
-						workflow and get the most out of our platform.
-					</p>
+					<div className="font-inter text-secondary text-center md:text-left">
+						{render(blok?.heading2)}
+					</div>
+					<div className="text-secondary text-center md:text-left">
+						{render(blok?.body2)}
+					</div>
 				</div>
 
 				<div className="md:col-span-1 md:mt-6 mt-10">
-					<img src="/images/culture.webp" alt="Our culture" />
+					<img src={blok?.image2?.filename} alt={blok?.image2?.alt} />
 				</div>
 			</div>
-		</StyledDiv>
+		</Section>
 	);
 };
 
-const StyledDiv = styled.div`
+const Section = styled.section`
 	margin: 146px 0 120px;
 
 	& > div {
@@ -128,9 +124,9 @@ const StyledDiv = styled.div`
 				margin: 0 auto;
 			}
 
-      @media screen and (max-width: 500px) {
-        width: 100%;
-      }
+			@media screen and (max-width: 500px) {
+				width: 100%;
+			}
 
 			& button {
 				width: 157px;

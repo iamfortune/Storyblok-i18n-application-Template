@@ -1,17 +1,23 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Supercharge = () => {
+const Supercharge: FC<Blok> = ({ blok }) => {
 	return (
-		<Section className="flex flex-col items-center justify-center">
+		<Section
+			{...storyblokEditable(blok)}
+			className="flex flex-col items-center justify-center"
+		>
 			<div>
 				<h2 className="text-center text-white font-inter">
-					Supercharge your team’s workflow today
+					{blok?.title}
 				</h2>
-				<p className="text-center text-white">
-					Make magic happen with a one of your new favorite all-in-one product
-					development platform
-				</p>
-				<button className="block">Get started</button>
+
+				<div className="text-center text-white">{render(blok?.body)}</div>
+
+				<button className="block">{blok?.buttonText}</button>
 			</div>
 		</Section>
 	);
@@ -44,16 +50,18 @@ const Section = styled.section`
 		}
 	}
 
-	& p {
-		font-weight: 400;
-		font-size: 20px;
-		max-width: 502px;
-		line-height: 26px;
-		margin: 24px auto 47px;
-
-		@media screen and (max-width: 767px) {
-			font-size: 18px;
+	& > div > div {
+		& p {
+			font-weight: 400;
+			font-size: 20px;
+			max-width: 502px;
 			line-height: 26px;
+			margin: 24px auto 47px;
+
+			@media screen and (max-width: 767px) {
+				font-size: 18px;
+				line-height: 26px;
+			}
 		}
 	}
 

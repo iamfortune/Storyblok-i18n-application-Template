@@ -1,16 +1,18 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { Blok } from "../../../interfaces";
 
-const ContactUs = () => {
+const ContactUs: FC<Blok> = ({ blok }) => {
 	return (
-		<Section className="flex flex-col items-center justify-center">
+		<Section
+			{...storyblokEditable(blok)}
+			className="flex flex-col items-center justify-center"
+		>
 			<div>
-				<h2 className="text-center text-white font-inter">
-					Can’t find what you’re looking for?
-				</h2>
-				<p className="text-center text-white">
-					Suggest a new category to improve your workflows
-				</p>
-				<button className="block">Contact us</button>
+				<h2 className="text-center text-white font-inter">{blok?.heading}</h2>
+				<p className="text-center text-white">{blok?.body}</p>
+				<button className="block">{blok?.buttonText}</button>
 			</div>
 		</Section>
 	);

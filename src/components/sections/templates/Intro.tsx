@@ -1,36 +1,44 @@
-import { useState } from "react";
+import { FC, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Intro = () => {
+const Intro: FC<Blok> = ({ blok }) => {
+	const router = useRouter();
 	const [searchTerm, setSearchTerm] = useState("");
 
+	const language = (router.query?.lang || "en-us") as "en-us" | "de-de" | "fr";
+
 	return (
-		<StyledDiv className="w-full">
+		<Section
+			className="w-full"
+			language={language}
+			{...storyblokEditable(blok)}
+		>
 			<div className="sb-bg" />
 
-			<h1 className="text-secondary font-inter text-center">
-				Find Templates that match your needs
-			</h1>
-			<p className="text-center">
-				Explore our various categories of powerful templates to get you started
-				in less than no time
-			</p>
+			<div className="text-secondary font-inter text-center">
+				{render(blok?.heading)}
+			</div>
+			<div className="text-center">{render(blok?.body)}</div>
 
 			<form onSubmit={(e) => e.preventDefault()} className="relative">
 				<input
 					type="search"
 					value={searchTerm}
-					placeholder="Search"
 					name="search-template"
+					placeholder={blok?.inputPlaceholder}
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
-				<button type="submit">Search</button>
+				<button type="submit">{blok?.buttonText}</button>
 			</form>
-		</StyledDiv>
+		</Section>
 	);
 };
 
-const StyledDiv = styled.div`
+const Section = styled.section<{ language: "en-us" | "de-de" | "fr" }>`
 	height: 333px;
 	padding: 89px 0 0;
 
@@ -39,10 +47,10 @@ const StyledDiv = styled.div`
 		right: 0;
 		top: 66px;
 		width: 100%;
-		height: 333px;
 		position: absolute;
 		background: url("/images/backgrounds/templates-intro-bg.webp") no-repeat
 			center center/cover;
+		height: ${({ language }) => (language !== "en-us" ? "400px" : "333px")};
 
 		@media screen and (max-width: 991px) {
 			padding: 80px 0;
@@ -59,7 +67,7 @@ const StyledDiv = styled.div`
 		}
 	}
 
-	& > h1 {
+	& h1 {
 		font-size: 48px;
 		font-weight: 900;
 		line-height: 58px;
@@ -75,7 +83,7 @@ const StyledDiv = styled.div`
 		}
 	}
 
-	& > p {
+	& p {
 		font-size: 20px;
 		font-weight: 400;
 		max-width: 608px;
