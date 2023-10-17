@@ -1,7 +1,7 @@
 {
 	"name": "sb-internationalization",
 	"version": "0.1.0",
-	"private": true,
+	"private": false,
 	"scripts": {
 		"dev": "export PORT=3001 && next dev",
 		"build": "next build",
