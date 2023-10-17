@@ -1,20 +1,24 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { storyblokEditable } from "@storyblok/react";
-import { render } from "storyblok-rich-text-react-renderer";
-import { Blok } from "../../../interfaces";
 
-const TemplateCard: FC<Blok> = ({ blok }) => {
+interface Props {
+	title: string;
+	iconSrc: string;
+	className?: string;
+	description: string;
+}
+
+const TemplateCard: FC<Props> = ({
+	title,
+	iconSrc,
+	description,
+	className = "",
+}) => {
 	return (
-		<StyledDiv
-			{...storyblokEditable(blok)}
-			className="col-span-1 flex flex-col items-center"
-		>
-			<img src={blok?.image?.filename} alt={blok?.image?.alt} />
-			<h2 className="font-nunito text-center whitespace-nowrap truncate">
-				{blok?.title}
-			</h2>
-			<div className="font-nunito">{render(blok?.description)}</div>
+		<StyledDiv className={`${className} flex flex-col items-center`}>
+			<img src={iconSrc} alt={title} />
+			<h2 className="font-nunito">{title}</h2>
+			<p className="font-nunito">{description}</p>
 		</StyledDiv>
 	);
 };
@@ -51,14 +55,14 @@ const StyledDiv = styled.div`
 		margin: 20px 0 25px;
 		letter-spacing: 0.02em;
 
-		@media screen and (max-width: 1279px) {
+		@media screen and (max-width: 767px) {
 			font-size: 24px;
 			line-height: 36px;
 			margin: 16px 0;
 		}
 	}
 
-	& p {
+	& > p {
 		color: #696984;
 		font-size: 18px;
 		font-weight: 400;

@@ -1,28 +1,25 @@
-import { FC, useMemo, useState } from "react";
-import { useRouter } from "next/router";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { StoryblokComponent, storyblokEditable } from "@storyblok/react";
 import { Blok } from "../../../interfaces";
 import PriceSwitch from "../../composed/PriceSwitch/PriceSwitch";
 
 const Pricing: FC<Blok> = ({ blok }) => {
-	const router = useRouter();
-	const [pricingType, setPricingType] = useState<1 | 2>(1);
+	const [pricingType, setPricingType] = useState<"monthly" | "yearly">(
+		"monthly"
+	);
 
 	const pricing = [blok.freebie[0], blok.professional[0], blok.enterprise[0]];
 
-	const language = (router.query?.lang || "en-us") as "en-us" | "de-de" | "fr";
+	useEffect(() => {
+		if (typeof window === "undefined") return;
 
-	const pricingText = useMemo(() => {
-		switch (language) {
-			case "de-de":
-				return ["Zahle monatlich", "Zahlen Sie jährlich"];
-			case "fr":
-				return ["Payez tous les mois", "Payer annuellement"];
-			default:
-				return ["Pay monthly", "Pay yearly"];
+		const pricingType = localStorage.getItem("pricingType");
+
+		if (pricingType) {
+			setPricingType(pricingType as "monthly" | "yearly");
 		}
-	}, [language]);
+	}, []);
 
 	return (
 		<Section {...storyblokEditable(blok)}>
@@ -30,14 +27,14 @@ const Pricing: FC<Blok> = ({ blok }) => {
 			<p className="text-center">{blok?.subHeading}</p>
 
 			<div className="flex items-center justify-center md:mb-24 mb-4">
-				<p className="font-dm-sans">{pricingText[0]}</p>
+				<p className="font-dm-sans">Pay Monthly</p>
 				<PriceSwitch
 					value={pricingType}
 					className="sm:mx-[24px] mx-4"
 					onSwitch={(type) => setPricingType(type)}
 				/>
 				<div className="relative">
-					<p className="font-dm-sans">{pricingText[1]}</p>
+					<p className="font-dm-sans">Pay Yearly</p>
 
 					<img
 						alt="discount"

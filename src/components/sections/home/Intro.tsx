@@ -28,7 +28,7 @@ const Intro: FC<Blok> = ({ blok }) => {
 			<div className="sb-video-section flex items-center justify-center">
 				<div className="flex items-center">
 					<p className="text-[15px] text-[#828282] mr-3 font-medium">
-						{blok?.subText}
+						Watch Demo
 					</p>
 					<img
 						alt="play-demo"
@@ -42,9 +42,7 @@ const Intro: FC<Blok> = ({ blok }) => {
 						src="/images/icons/seat.svg"
 						style={{ width: "14px", height: "13px", marginRight: "5px" }}
 					/>
-					<p className="text-[15px] text-white font-medium">
-						{blok?.buttonText}
-					</p>
+					<p className="text-[15px] text-white font-medium">Save a seat</p>
 				</button>
 			</div>
 		</Section>

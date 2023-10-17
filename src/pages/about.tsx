@@ -1,43 +1,24 @@
-import { NextPageContext } from "next";
-import { useStoryblokState, StoryblokComponent } from "@storyblok/react";
-import { fetchStoryByLanguage } from "../utils";
 import Layout from "../components/composed/Layout/Layout";
-import Spinner from "../components/atoms/Spinner/Spinner";
+import Intro from "../components/sections/about/Intro";
+import Companies from "../components/sections/about/Companies";
+import TeamAndCulture from "../components/sections/about/TeamAndCulture";
+import Supercharge from "../components/sections/home/Supercharge";
+import Platform from "../components/sections/about/Platform";
+import CoreValues from "../components/sections/about/CoreValues";
 
-const Aboutpage = ({ initialStory }: any) => {
-	const sbStory = useStoryblokState(initialStory);
-
+const Aboutpage = () => {
 	return (
-		<>
-			<Layout>
-				<div className="md:mt-20 mt-8">
-					{!sbStory || !(sbStory as any)?.content ? (
-						<div className="flex flex-col items-center">
-							<Spinner size={100} />
-						</div>
-					) : (
-						<StoryblokComponent blok={sbStory.content} />
-					)}
-				</div>
-			</Layout>
-		</>
+		<Layout>
+			<>
+				<Intro />
+				<Companies />
+				<TeamAndCulture />
+				<CoreValues />
+				<Platform />
+				{/* <Supercharge /> */}
+			</>
+		</Layout>
 	);
 };
-
-export async function getServerSideProps(context: NextPageContext) {
-	const { query } = context;
-	const lang = query?.lang;
-
-	const language = (lang || "en-us") as "en-us" | "de-de" | "fr";
-
-	const res = await fetchStoryByLanguage("about", language);
-
-	return {
-		props: {
-			initialStory: res || false,
-			key: res?.data ? res?.data?.story.id : false,
-		},
-	};
-}
 
 export default Aboutpage;
