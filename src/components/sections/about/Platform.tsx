@@ -1,60 +1,59 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Platform = () => {
+const Platform: FC<Blok> = ({ blok }) => {
 	return (
-		<StyledDiv>
+		<Section {...storyblokEditable(blok)}>
 			<div className="flex flex-col-reverse md:grid md:grid-cols-2 lg:gap-[70px] md:gap-[40px]">
 				<div className="md:col-span-1">
-					<img src="/images/platform.webp" alt="our platform" />
+					<img src={blok?.image?.filename} alt={blok?.image?.alt} />
 				</div>
 				<div className="md:col-span-1 md:mt-6 md:mb-0 mb-10">
-					<h3 className="font-inter text-secondary text-center md:text-left">
-						A bit <span className="text-primary">more</span>
-					</h3>
-					<p className="text-secondary text-center md:text-left">
-						Our platform is designed to make product development more
-						manageable, collaborative, and transparent. With features such as
-						idea management, roadmap planning, project management, feedback
-						collection, and analytics and reporting, our platform provides
-						everything you need to develop a successful product from start to
-						finish.
-					</p>
+					<div className="font-inter text-secondary text-center md:text-left">
+						{render(blok?.heading)}
+					</div>
+					<div className="text-secondary text-center md:text-left">
+						{render(blok?.body)}
+					</div>
 
 					<div className="sb-btn-wrapper relative text-white">
-						<button>Get started</button>
+						<button>{blok.buttonText}</button>
 					</div>
 				</div>
 			</div>
-		</StyledDiv>
+		</Section>
 	);
 };
 
-const StyledDiv = styled.div`
+const Section = styled.section`
 	margin: 979px 0 120px;
 
-  @media screen and (max-width: 1279px) {
-    margin-top: 1100px;
-  }
+	@media screen and (max-width: 1279px) {
+		margin-top: 1100px;
+	}
 
-  @media screen and (max-width: 767px) {
-    margin-top: 1300px;
-  }
+	@media screen and (max-width: 767px) {
+		margin-top: 1300px;
+	}
 
-  @media screen and (max-width: 540px) {
-    margin-top: 1400px;
-  }
+	@media screen and (max-width: 540px) {
+		margin-top: 1400px;
+	}
 
-  @media screen and (max-width: 450px) {
-    margin-top: 1500px;
-  }
+	@media screen and (max-width: 450px) {
+		margin-top: 1500px;
+	}
 
-  @media screen and (max-width: 400px) {
-    margin-top: 1700px;
-  }
+	@media screen and (max-width: 400px) {
+		margin-top: 1700px;
+	}
 
-  @media screen and (max-width: 320px) {
-    margin-top: 1900px;
-  }
+	@media screen and (max-width: 320px) {
+		margin-top: 1900px;
+	}
 
 	& > div {
 		margin-bottom: 150px;

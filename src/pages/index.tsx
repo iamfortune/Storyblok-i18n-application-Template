@@ -1,36 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { NextPageContext } from "next";
 import { useStoryblokState, StoryblokComponent } from "@storyblok/react";
-import { AppContext } from "../store";
 import { fetchStoryByLanguage } from "../utils";
 import Layout from "../components/composed/Layout/Layout";
 import Spinner from "../components/atoms/Spinner/Spinner";
 
 const Homepage = ({ initialStory }: any) => {
-	const { language } = useContext(AppContext);
-	const [story, setStory] = useState(initialStory);
-
-	useEffect(() => {
-		const fetchStory = async () => {
-			const story = await fetchStoryByLanguage("home", language);
-			console.log(story);
-			setStory(story);
-		};
-
-		fetchStory();
-	}, [language]);
-
-	const sbStory = useStoryblokState(story);
+	const sbStory = useStoryblokState(initialStory);
 
 	return (
 		<>
 			<Layout>
 				<div className="md:mt-20 mt-8">
-					{!sbStory ? (
+					{!sbStory || !(sbStory as any)?.content ? (
 						<div className="flex flex-col items-center">
 							<Spinner size={100} />
 						</div>
 					) : (
-						<StoryblokComponent blok={sbStory?.content} />
+						<StoryblokComponent blok={sbStory.content} />
 					)}
 				</div>
 			</Layout>
@@ -38,17 +24,19 @@ const Homepage = ({ initialStory }: any) => {
 	);
 };
 
-export async function getStaticProps() {
-	const language = "en-us";
+export async function getServerSideProps(context: NextPageContext) {
+	const { query } = context;
+	const lang = query?.lang;
+
+	const language = (lang || "en-us") as "en-us" | "de-de" | "fr";
 
 	const res = await fetchStoryByLanguage("home", language);
 
 	return {
 		props: {
-			initialStory: res?.data ? res?.data?.story : false,
+			initialStory: res || false,
 			key: res?.data ? res?.data?.story.id : false,
 		},
-		revalidate: 3600,
 	};
 }
 

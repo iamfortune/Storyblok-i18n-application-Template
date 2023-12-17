@@ -1,23 +1,10 @@
+import { ChangeEvent, useMemo, useState } from "react";
 import Link from "next/link";
-import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
-const links = [
-	{
-		name: "Careers",
-		href: "#",
-	},
-	{
-		name: "Privacy Policy",
-		href: "#",
-	},
-	{
-		name: "Terms & Conditions",
-		href: "#",
-	},
-];
-
 const Footer = () => {
+	const router = useRouter();
 	const [email, setEmail] = useState("");
 
 	const submitHandler = (e: ChangeEvent<HTMLFormElement>) => {
@@ -26,11 +13,94 @@ const Footer = () => {
 		setEmail("");
 	};
 
+	const links = useMemo(() => {
+		switch (router.query?.lang) {
+			case "de-de":
+				return [
+					{
+						name: "Karriere",
+						href: "#",
+					},
+					{
+						name: "Datenschutzrichtlinie",
+						href: "#",
+					},
+					{
+						name: "Geschäftsbedingungen",
+						href: "#",
+					},
+				];
+			case "fr":
+				return [
+					{
+						name: "Carrières",
+						href: "#",
+					},
+					{
+						name: "Confidentialité",
+						href: "#",
+					},
+					{
+						name: "Termes et conditions",
+						href: "#",
+					},
+				];
+			default:
+				return [
+					{
+						name: "Careers",
+						href: "#",
+					},
+					{
+						name: "Privacy Policy",
+						href: "#",
+					},
+					{
+						name: "Terms & Conditions",
+						href: "#",
+					},
+				];
+		}
+	}, [router.query?.lang]);
+
+	const headingText = useMemo(() => {
+		switch (router.query?.lang) {
+			case "de-de":
+				return "Bleiben Sie mit den neuesten Informationen von uns auf dem Laufenden";
+			case "fr":
+				return "Restez à jour avec nos dernières nouveautés";
+			default:
+				return "Stay up to date with the latest from us";
+		}
+	}, [router.query?.lang]);
+
+	const buttonText = useMemo(() => {
+		switch (router.query?.lang) {
+			case "de-de":
+				return "Abonnieren";
+			case "fr":
+				return "S'abonner";
+			default:
+				return "Subscribe";
+		}
+	}, [router.query?.lang]);
+
+	const placeholderText = useMemo(() => {
+		switch (router.query?.lang) {
+			case "de-de":
+				return "Ihre E-Mail-Adresse";
+			case "fr":
+				return "Votre adresse e-mail";
+			default:
+				return "Your Email";
+		}
+	}, [router.query?.lang]);
+
 	return (
 		<StyledFooter className="flex flex-col items-center justify-end">
 			<div className="sm:w-5/6 w-11/12 mx-auto">
 				<h1 className="font-inter font-medium italic text-center">
-					Stay up to date with the latest from us
+					{headingText}
 				</h1>
 				<form
 					onSubmit={submitHandler}
@@ -40,11 +110,11 @@ const Footer = () => {
 						type="email"
 						value={email}
 						name="email-address"
-						placeholder="Your Email"
+						placeholder={placeholderText}
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 					<button type="submit" className="sm:ml-5 sm:mt-0 mt-4">
-						Subscribe
+						{buttonText}
 					</button>
 				</form>
 

@@ -1,22 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
-import { AppState } from "../../../store";
 import { LanguageOption } from "../../composed/Navbar/Navbar";
 
 interface Props {
 	className?: string;
-	selectedOption: number;
-	onSelect: (option: AppState["language"]) => void;
 	options: LanguageOption[];
 }
 
-const LanguageDropdown: FC<Props> = ({
-	className,
-	options,
-	onSelect,
-	selectedOption,
-}) => {
+const LanguageDropdown: FC<Props> = ({ options, className }) => {
+	const router = useRouter();
 	const [showDropdown, setShowDropdown] = useState(false);
 
 	let timeOutId: number | any = 0;
@@ -29,6 +23,10 @@ const LanguageDropdown: FC<Props> = ({
 
 	const onFocusHandler = () => {
 		clearTimeout(timeOutId);
+	};
+
+	const isSelected = (langCode: LanguageOption["code"]) => {
+		return router.query?.lang === langCode;
 	};
 
 	return (
@@ -46,7 +44,8 @@ const LanguageDropdown: FC<Props> = ({
 				onClick={() => setShowDropdown(!showDropdown)}
 			>
 				<p className="text-[12px] whitespace-nowrap">
-					{options[selectedOption]?.title}
+					{options.find((option) => isSelected(option?.code))?.title ||
+						"English [US]"}
 				</p>
 				<img
 					alt="dropdown"
@@ -67,15 +66,12 @@ const LanguageDropdown: FC<Props> = ({
 					<button
 						key={option?.title}
 						className="sb-dropdown-item text-left"
-						style={{
-							background:
-								options[selectedOption]?.code === option?.code
-									? "#f7f7f7"
-									: "transparent",
-						}}
 						onClick={() => {
-							onSelect(option?.code);
+							router.push(`?lang=${option?.code}`);
 							setShowDropdown(false);
+						}}
+						style={{
+							background: isSelected(option?.code) ? "#f7f7f7" : "transparent",
 						}}
 					>
 						{option?.title}

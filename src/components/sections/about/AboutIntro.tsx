@@ -1,19 +1,18 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { storyblokEditable } from "@storyblok/react";
+import { render } from "storyblok-rich-text-react-renderer";
+import { Blok } from "../../../interfaces";
 
-const Intro = () => {
+const AboutIntro: FC<Blok> = ({ blok }) => {
 	return (
-		<StyledDiv className="flex">
+		<Section {...storyblokEditable(blok)}>
 			<div className="w-full">
 				<div className="custom-container relative">
-					<h1 className="font-inter text-secondary">
-						Empowering successful teams, one workflow at a time
-					</h1>
-					<p>
-						We believe that every great product starts with a great idea, and
-						we're passionate about helping teams bring their ideas to life.
-					</p>
+					<h1 className="font-inter text-secondary">{blok?.headline}</h1>
+					<div className="sb-body">{render(blok?.body)}</div>
 					<button className="sb-btn flex items-center justify-center text-[15px] font-chakra text-white font-medium">
-						Life at Artsy
+						{blok?.buttonText}
 					</button>
 
 					<div className="sb-video-wrapper flex flex-col items-center justify-center">
@@ -25,11 +24,11 @@ const Intro = () => {
 					</div>
 				</div>
 			</div>
-		</StyledDiv>
+		</Section>
 	);
 };
 
-const StyledDiv = styled.div`
+const Section = styled.section`
 	left: 0;
 	right: 0;
 	top: 66px;
@@ -77,7 +76,7 @@ const StyledDiv = styled.div`
 		}
 	}
 
-	& p {
+	& .sb-body {
 		font-size: 20px;
 		max-width: 535px;
 		font-weight: 400;
@@ -159,4 +158,4 @@ const StyledDiv = styled.div`
 	}
 `;
 
-export default Intro;
+export default AboutIntro;
