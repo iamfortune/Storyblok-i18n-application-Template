@@ -84,25 +84,6 @@ const Section = styled.section`
 			margin-bottom: 100px;
 		}
 
-		/* & img {
-			width: 568px;
-			height: 486px;
-			object-fit: cover;
-
-			@media screen and (max-width: 767px) {
-				width: 100%;
-			}
-
-			@media screen and (max-width: 639px) {
-				height: 400px;
-				object-fit: fill;
-			}
-
-			@media screen and (max-width: 500px) {
-				height: 300px;
-			}
-		} */
-
 		& h3 {
 			font-weight: 900;
 			font-size: 40px;
