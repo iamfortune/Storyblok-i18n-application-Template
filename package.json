@@ -3,8 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "export PORT=3001 && next dev",
 		"build": "next build",
+		"dev": "export PORT=3001 && next dev",
 		"start": "next start",
 		"lint": "next lint",
 		"serve:https": "local-ssl-proxy --source 3010 --target 3001 --cert localhost.pem --key localhost-key.pem"

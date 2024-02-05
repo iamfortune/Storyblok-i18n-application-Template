@@ -12,7 +12,8 @@ storyblokInit({
 
 const fetchStoryByLanguage = async (
 	slug: string,
-	language: "en-us" | "de-de" | "fr"
+	language: "en-us" | "de-de" | "fr",
+	releaseId?: string
 ) => {
 	try {
 		const sbParams: ISbStoryParams = {

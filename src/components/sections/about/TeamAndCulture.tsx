@@ -1,15 +1,55 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import styled from "styled-components";
+import { useMediaQuery } from "react-responsive";
 import { storyblokEditable } from "@storyblok/react";
 import { render } from "storyblok-rich-text-react-renderer";
 import { Blok } from "../../../interfaces";
 
 const TeamAndCulture: FC<Blok> = ({ blok }) => {
+
+	const isMobile = useMediaQuery({ query: "(max-width: 639px)" });
+
+	const height = isMobile ? 500 : 0;
+
+	const optimizedImage1 = useMemo(() => {
+		// Desctructure the filename and focus point from the image1 property.
+		const { filename, focus } = blok?.image1;
+		// If there is no focus point, return the filename as is.
+		if (!focus) return filename;
+
+		// If there is no filename, return null.
+		if (!filename) return null;
+
+		// Resize the image width & height
+		let imageSource = `${filename}/m/1200x${height}`;
+
+		// Add focus point filters to the image
+		imageSource += `/filters:focal(${focus})`;
+
+		return imageSource;
+	}, [blok, height]);
+
+	const optimizedImage2 = useMemo(() => {
+		// Desctructure the filename and focus point from the image2 property.
+		const { filename, focus } = blok?.image2;
+		if (!focus) return filename;
+
+		if (!filename) return null;
+
+		// Resize the image width & height
+		let imageSource = `${filename}/m/1200x${height}`;
+
+		// Add focus point filters to the image
+		imageSource += `/filters:focal(${focus})`;
+
+		return imageSource;
+	}, [blok, height]);
+
 	return (
 		<Section {...storyblokEditable(blok)}>
 			<div className="flex flex-col-reverse md:grid md:grid-cols-2 lg:gap-[70px] md:gap-[40px]">
 				<div className="md:col-span-1">
-					<img src={blok?.image1?.filename} alt={blok?.image1?.alt} />
+				<img src={optimizedImage1} alt={blok?.image1?.alt} />
 				</div>
 				<div className="md:col-span-1 md:mt-6 md:mb-0 mb-10">
 					<div className="font-inter text-secondary text-center md:text-left">
@@ -37,7 +77,7 @@ const TeamAndCulture: FC<Blok> = ({ blok }) => {
 				</div>
 
 				<div className="md:col-span-1 md:mt-6 mt-10">
-					<img src={blok?.image2?.filename} alt={blok?.image2?.alt} />
+					<img src={optimizedImage2} alt={blok?.image2?.alt} />
 				</div>
 			</div>
 		</Section>
@@ -58,24 +98,6 @@ const Section = styled.section`
 			margin-bottom: 0;
 		}
 
-		& img {
-			width: 568px;
-			height: 486px;
-			object-fit: cover;
-
-			@media screen and (max-width: 767px) {
-				width: 100%;
-			}
-
-			@media screen and (max-width: 639px) {
-				height: 400px;
-				object-fit: fill;
-			}
-
-			@media screen and (max-width: 500px) {
-				height: 300px;
-			}
-		}
 
 		& h3 {
 			font-weight: 900;

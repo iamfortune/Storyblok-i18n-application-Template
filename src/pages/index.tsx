@@ -27,10 +27,11 @@ const Homepage = ({ initialStory }: any) => {
 export async function getServerSideProps(context: NextPageContext) {
 	const { query } = context;
 	const lang = query?.lang;
+	const releaseId = query?.release_id as string;
 
 	const language = (lang || "en-us") as "en-us" | "de-de" | "fr";
 
-	const res = await fetchStoryByLanguage("home", language);
+	const res = await fetchStoryByLanguage("home", language, releaseId);
 
 	return {
 		props: {
