@@ -14,11 +14,12 @@ const TeamAndCulture: FC<Blok> = ({ blok }) => {
 	const optimizedImage1 = useMemo(() => {
 		// Desctructure the filename and focus point from the image1 property.
 		const { filename, focus } = blok?.image1;
-		// If there is no focus point, return the filename as is.
-		if (!focus) return filename;
-
+		
 		// If there is no filename, return null.
 		if (!filename) return null;
+
+		// If there is no focus point, return the filename as is.
+		if (!focus) return filename;
 
 		// Resize the image width & height
 		let imageSource = `${filename}/m/1200x${height}`;
