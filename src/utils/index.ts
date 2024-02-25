@@ -20,6 +20,7 @@ const fetchStoryByLanguage = async (
 			version: "draft", // or 'published'
 			language,
 			fallback_lang: "en-us",
+			from_release: releaseId,
 		};
 
 		const storyblokApi = getStoryblokApi();
